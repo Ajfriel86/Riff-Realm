@@ -1,0 +1,108 @@
+<!-- Loading static files -->
+{% load static %}
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+
+<head>
+    <!-- Load color modes JavaScript file for theme switching functionality -->
+    <script src="{% static 'js/color-modes.js' %}"></script>
+
+    <!-- Standard HTML meta tags for responsiveness, authorship, and content description -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.118.2">
+
+    <!-- Bootstrap CSS for styling -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- Custom stylesheet for additional styling -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        crossorigin="anonymous">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
+
+    <title>Brutal Groove</title>
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+</head>
+
+<body>
+    <!-- Header section with navigation bar -->
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <!-- Brand logo/name -->
+                <a class="navbar-brand" href="{% url 'home' %}">Brutal Groove</a>
+                <!-- Toggler button for mobile nav -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <!-- Dynamic URL generation for Django template -->
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                        </li>
+                        <!-- Add appropriate aria-current attribute for the current page -->
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'contact' %}">Contact</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'account_logout' %}">Logout</a>
+                        </li>
+                        {% else %}
+                        <li>
+                            <a class="nav-link active" href="{% url 'account_login' %}">Login</a>
+                        </li>
+                        <li>
+                            <a class="nav-link active" href="{% url 'account_signup' %}">Register</a>
+                        </li>
+                        {% endif %}
+                        <!-- Conditional display based on user status -->
+                        {% if user.is_authenticated and user.is_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'admin:index' %}" target="_blank">Admin Panel</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <!-- Display username if user is authenticated -->
+                {% if user.is_authenticated %}
+                <div class="navbar-text">
+                    Welcome, <span class="username-highlight">{{ user.username }}</span>! You are logged in.
+                </div>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main content block where page-specific content will be injected -->
+    <main>
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <p>&copy; 2017–2024 Riff Realm Inc. &middot; <a
+                href="https://en.wikipedia.org/wiki/Incorporation_(business)">Privacy</a> &middot; <a
+                href="https://en.wikipedia.org/wiki/Terms_of_service">Terms</a></p>
+        <p class="float-end"><a href="#">Back to top</a></p>
+    </footer>
+</body>
+
+</html>
